@@ -41,7 +41,7 @@ func TestHandler(t *testing.T) {
 	}
 }
 
-func TestCheckStar(t *testing.T) {
+func TestCheckScore(t *testing.T) {
 	tests := []struct {
 		name string
 		res  []response
@@ -67,7 +67,7 @@ func TestCheckStar(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := checkStar(tt.res); got != tt.want {
+			if got := checkScore(tt.res); got != tt.want {
 				t.Errorf("got=%v, want %v", got, tt.want)
 			}
 		})

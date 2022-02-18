@@ -24,10 +24,11 @@ func Handler(ctx context.Context, url string) (int, error) {
 	if err := json.Unmarshal(bytes, &res); err != nil {
 		return 0, err
 	}
-	return checkStar(res), nil
+	return checkScore(res), nil
 }
 
-func checkStar(res []response) int {
+//it will return the total score
+func checkScore(res []response) int {
 	var s int
 	for i, r := range res {
 		if i < 5 {
