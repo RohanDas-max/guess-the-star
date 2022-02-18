@@ -16,14 +16,14 @@ func TestHandler(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "",
+			name:    "with url",
 			ctx:     ctx,
 			url:     "http://google.com",
 			want:    0,
 			wantErr: false,
 		},
 		{
-			name:    "",
+			name:    "without url",
 			ctx:     ctx,
 			url:     "",
 			want:    0,

@@ -7,14 +7,16 @@ import (
 )
 
 func Controller(ctx context.Context, url string) (int, error) {
+	var n int
 	select {
 	case <-ctx.Done():
-		return 0, ctx.Err()
+		return n, ctx.Err()
 	default:
 		score, err := handler.Handler(ctx, url)
 		if err != nil {
-			return 0, err
+			return n, err
+		} else {
+			return score, nil
 		}
-		return score, nil
 	}
 }
