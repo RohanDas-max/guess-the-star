@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	"log"
 
 	"github.com/rohandas-max/GuessTheStar/pkg/controller"
@@ -14,16 +13,13 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	lang := flag.String("l", "", "enter the programming language")
-	since := flag.String("s", "weekly", "")
+	since := flag.String("s", "weekly", "eg: daily/weekly/monthly")
 	flag.Parse()
-
-	var url string = "https://gh-trending-api.herokuapp.com/repositories/" + *lang + "?since=" + *since
-	score, err := controller.Controller(ctx, url)
+	flags := make(map[string]string)
+	flags["lang"] = *lang
+	flags["since"] = *since
+	err := controller.Controller(ctx, flags)
 	if err != nil {
 		log.Fatal(err)
-	} else if score > 3 {
-		fmt.Println("LETS GO!!! you won the game!")
-	} else {
-		fmt.Println("Opps!! Better Luck next Time")
 	}
 }
