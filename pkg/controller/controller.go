@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/rohandas-max/GuessTheStar/pkg/handler"
@@ -13,24 +14,29 @@ func Controller(ctx context.Context, flags map[string]string) error {
 	case <-ctx.Done():
 		return ctx.Err()
 	default:
-		repos, err := handler.GetTrendingRepos(ctx, flags)
+		repos, err := handler.GetTrendingRepos(flags)
 		if err != nil {
 			return err
 		}
 		var count int
-		for i := 0; i < 5; i++ {
-			var input int
-			fmt.Printf("Round:%d\tRepo:%s/%s\nlanguage:%s\n", i+1, repos[i].Username, repos[i].Name, repos[i].Language)
-			fmt.Println("GUESS THE STAR")
-			fmt.Scan(&input)
-			if utils.IsCorrectGuess(repos[i].TotalStars, input) {
-				count++
+		if len(repos) > 4 {
+			for i := 0; i < 5; i++ {
+				var input int
+				repo := repos[i]
+				fmt.Printf("Round:%d\tRepo:%s/%s\nlanguage:%s\n", i+1, repo.Username, repo.Name, repo.Language)
+				fmt.Println("GUESS THE STAR")
+				fmt.Scan(&input)
+				if utils.IsCorrectGuess(repo.TotalStars, input) {
+					count++
+				}
 			}
-		}
-		if count > 3 {
-			fmt.Println("LETS GO!!! you won the game!")
+			if count > 3 {
+				fmt.Println("LETS GO!!! you won the game!")
+			} else {
+				fmt.Println("Opps!! Better Luck next Time")
+			}
 		} else {
-			fmt.Println("Opps!! Better Luck next Time")
+			return errors.New("not enough trending repos")
 		}
 	}
 	return nil
