@@ -7,8 +7,6 @@ import (
 )
 
 func TestGet(t *testing.T) {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
 	tests := []struct {
 		name    string
 		ctx     context.Context
@@ -16,22 +14,20 @@ func TestGet(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "test1",
+			name:    "test passed with link",
 			url:     "http://google.com",
-			ctx:     ctx,
 			wantErr: false,
 		},
 		{
-			name:    "test2 empty url",
+			name:    "test failed with empty url",
 			url:     "",
-			ctx:     ctx,
 			wantErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := Get(tt.ctx, tt.url)
+			_, err := Get(tt.url)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("get()=%v, wantErr=%v", err, tt.wantErr)
 			}

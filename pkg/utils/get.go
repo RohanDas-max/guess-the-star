@@ -1,22 +1,15 @@
 package utils
 
 import (
-	"context"
 	"errors"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 )
 
-func Get(ctx context.Context, url string) ([]byte, error) {
+func Get(url string) ([]byte, error) {
 	var bytes = []byte{}
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		return bytes, err
-	}
-	req = req.WithContext(ctx)
-	resp, err := http.DefaultClient.Do(req)
-
+	resp, err := http.Get(url)
 	if err != nil {
 		return bytes, err
 	}
