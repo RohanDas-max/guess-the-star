@@ -7,10 +7,10 @@ import (
 )
 
 func TestController(t *testing.T) {
-	ctx, cncl := context.WithTimeout(context.Background(), 1*time.Second)
-	defer cncl()
-	ctx1, cncl1 := context.WithCancel(context.Background())
-	defer cncl1()
+	ctxWithTimeout, cancle := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancle()
+	ctxWithCancel, cancle := context.WithCancel(context.Background())
+	defer cancle()
 
 	type args struct {
 		ctx   context.Context
@@ -24,15 +24,15 @@ func TestController(t *testing.T) {
 		{
 			name: "context deadline",
 			args: args{
-				ctx:   ctx,
+				ctx:   ctxWithTimeout,
 				flags: map[string]string{"lang": "go", "since": "weekly"},
 			},
 			wantErr: true,
 		},
 		{
-			name: "pass",
+			name: "passed with nil error",
 			args: args{
-				ctx:   ctx1,
+				ctx:   ctxWithCancel,
 				flags: map[string]string{"lang": "go", "since": "weekly"},
 			},
 			wantErr: false,
