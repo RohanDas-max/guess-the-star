@@ -21,12 +21,12 @@ func Controller(ctx context.Context, flags map[string]string) error {
 		var count int
 		if len(repos) > 4 {
 			for i := 0; i < 5; i++ {
-				var input int
 				repo := repos[i]
 				fmt.Printf("Round:%d\tRepo:%s/%s\nlanguage:%s\n", i+1, repo.Username, repo.Name, repo.Language)
+				var input int
 				fmt.Println("GUESS THE STAR")
-				fmt.Scan(&input)
-				if utils.IsCorrectGuess(repo.TotalStars, input) {
+				fmt.Scanf("%d", &input)
+				if score := checkUserInputAndScore(repo.TotalStars, input); score > 0 {
 					count++
 				}
 			}
@@ -40,4 +40,11 @@ func Controller(ctx context.Context, flags map[string]string) error {
 		}
 	}
 	return nil
+}
+
+func checkUserInputAndScore(TotalStars, input int) int {
+	if utils.IsCorrectGuess(TotalStars, input) {
+		return 1
+	}
+	return 0
 }
