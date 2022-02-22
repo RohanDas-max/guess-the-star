@@ -75,7 +75,7 @@ func Test_checkUserInputAndScore(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := checkUserInputAndScore(tt.totalStars, tt.input); got != tt.want {
+			if got := checkScore(tt.totalStars, tt.input); got != tt.want {
 				t.Errorf("checkUserInputAndScore() = %v, want %v", got, tt.want)
 			}
 		})

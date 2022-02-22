@@ -26,7 +26,7 @@ func Controller(ctx context.Context, flags map[string]string) error {
 				var input int
 				fmt.Println("GUESS THE STAR")
 				fmt.Scanf("%d", &input)
-				if score := checkUserInputAndScore(repo.TotalStars, input); score > 0 {
+				if score := checkScore(repo.TotalStars, input); score > 0 {
 					count++
 				}
 			}
@@ -42,7 +42,7 @@ func Controller(ctx context.Context, flags map[string]string) error {
 	return nil
 }
 
-func checkUserInputAndScore(TotalStars, input int) int {
+func checkScore(TotalStars, input int) int {
 	if utils.IsCorrectGuess(TotalStars, input) {
 		return 1
 	}
