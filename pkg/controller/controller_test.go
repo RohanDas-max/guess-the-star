@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 	"time"
+
+	"github.com/rohandas-max/GuessTheStar/pkg/handler"
 )
 
 func TestController(t *testing.T) {
@@ -75,8 +77,52 @@ func Test_checkUserInputAndScore(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := checkScore(tt.totalStars, tt.input); got != tt.want {
+			if got := checkScoreFromUserInput(tt.totalStars); got != tt.want {
 				t.Errorf("checkUserInputAndScore() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_GettingTotalScore(t *testing.T) {
+	type args struct {
+		repos []handler.TrendingRepo
+		want  int
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "passed with empty values",
+			args: args{
+				repos: []handler.TrendingRepo{{
+					Username:   "",
+					Name:       "",
+					TotalStars: 0,
+					Language:   "",
+				}, {}, {}, {}, {}},
+				want: 5,
+			},
+		},
+		{
+			name: "passed with empty values",
+			args: args{
+				repos: []handler.TrendingRepo{{
+					Username:   "",
+					Name:       "",
+					TotalStars: 0,
+					Language:   "",
+				}, {}, {}, {}, {}},
+				want: 5,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := GettingTotalScore(tt.args.repos)
+			if got != tt.args.want {
+				t.Error("got != want", got, tt.args.want)
 			}
 		})
 	}
