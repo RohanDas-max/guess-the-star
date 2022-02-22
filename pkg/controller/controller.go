@@ -37,19 +37,21 @@ func GettingTotalScore(repos []handler.TrendingRepo) int {
 	for i := 0; i < 5; i++ {
 		repo := repos[i]
 		fmt.Printf("Round:%d\tRepo:%s/%s\nlanguage:%s\n", i+1, repo.Username, repo.Name, repo.Language)
-		if checkScoreFromUserInput(repo.TotalStars) > 0 {
+		var input int
+		fmt.Println("GUESS THE STAR")
+		fmt.Scanf("%d", &input)
+		if checkScoreFromUserInput(repo.TotalStars, input) > 0 {
 			count++
 		}
 	}
 	return count
 }
 
-func checkScoreFromUserInput(TotalStars int) int {
-	var input int
-	fmt.Println("GUESS THE STAR")
-	fmt.Scanf("%d", &input)
-	if utils.IsCorrectGuess(TotalStars, input) {
-		return 1
+func checkScoreFromUserInput(TotalStars, input int) int {
+	if TotalStars > 0 {
+		if utils.IsCorrectGuess(TotalStars, input) {
+			return 1
+		}
 	}
 	return 0
 }

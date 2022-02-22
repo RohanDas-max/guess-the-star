@@ -49,6 +49,70 @@ func TestController(t *testing.T) {
 	}
 }
 
+func Test_GettingTotalScore(t *testing.T) {
+	type args struct {
+		repos []handler.TrendingRepo
+		want  int
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "passed with empty values",
+			args: args{
+				repos: []handler.TrendingRepo{{
+					Username:   "",
+					Name:       "",
+					TotalStars: 0,
+					Language:   "",
+				}, {}, {}, {}, {}},
+				want: 0,
+			},
+		},
+		{
+			name: "passed with values",
+			args: args{
+				repos: []handler.TrendingRepo{{
+					Username:   "go",
+					Name:       "go",
+					TotalStars: 3000,
+					Language:   "go",
+				}, {
+					Username:   "rust",
+					Name:       "rust",
+					TotalStars: 1000,
+					Language:   "rust",
+				}, {
+					Username:   "js",
+					Name:       "js",
+					TotalStars: 10000,
+					Language:   "js",
+				}, {
+					Username:   "python",
+					Name:       "python",
+					TotalStars: 9000,
+					Language:   "python",
+				}, {
+					Username:   "scala",
+					Name:       "scala",
+					TotalStars: 2000,
+					Language:   "scala",
+				}},
+				want: 0,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := GettingTotalScore(tt.args.repos)
+			if got != tt.args.want {
+				t.Error("got != want", got, tt.args.want)
+			}
+		})
+	}
+}
+
 func Test_checkUserInputAndScore(t *testing.T) {
 	tests := []struct {
 		name       string
@@ -69,60 +133,16 @@ func Test_checkUserInputAndScore(t *testing.T) {
 			want:       1,
 		},
 		{
-			name:       "should return 0 because of empty value",
+			name:       "should return 1 because of empty value",
 			totalStars: 0,
 			input:      0,
-			want:       1,
+			want:       0,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := checkScoreFromUserInput(tt.totalStars); got != tt.want {
+			if got := checkScoreFromUserInput(tt.totalStars, tt.input); got != tt.want {
 				t.Errorf("checkUserInputAndScore() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_GettingTotalScore(t *testing.T) {
-	type args struct {
-		repos []handler.TrendingRepo
-		want  int
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{
-			name: "passed with empty values",
-			args: args{
-				repos: []handler.TrendingRepo{{
-					Username:   "",
-					Name:       "",
-					TotalStars: 0,
-					Language:   "",
-				}, {}, {}, {}, {}},
-				want: 5,
-			},
-		},
-		{
-			name: "passed with empty values",
-			args: args{
-				repos: []handler.TrendingRepo{{
-					Username:   "",
-					Name:       "",
-					TotalStars: 0,
-					Language:   "",
-				}, {}, {}, {}, {}},
-				want: 5,
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := GettingTotalScore(tt.args.repos)
-			if got != tt.args.want {
-				t.Error("got != want", got, tt.args.want)
 			}
 		})
 	}
