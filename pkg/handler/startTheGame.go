@@ -26,9 +26,9 @@ type TrendingRepo struct {
 }
 
 func StartTheGame(flags map[string]string) error {
-	lang := flags["lang"]
-	since := flags["since"]
-	repos, _ := getTheRepos(lang, since)
+	flagLanguage := flags["lang"]
+	flagTrendSince := flags["since"]
+	repos, _ := getTheRepos(flagLanguage, flagTrendSince)
 	if len(repos) > 4 {
 		var totalScore int
 		for i := 0; i < 5; i++ {
