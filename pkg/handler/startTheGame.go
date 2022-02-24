@@ -33,11 +33,11 @@ func StartTheGame(flags map[string]string) error {
 		var totalScore int
 		for i := 0; i < 5; i++ {
 			repo := repos[i]
-			printsRoundAndRepo(i+1, repo)
+			printsRoundAndRepos(i+1, repo)
 			input := userGuessStar()
 			totalScore += score(repo.TotalStars, input)
 		}
-		result(totalScore)
+		printResult(totalScore)
 	} else {
 		return errors.New("not enough repos to play the game")
 	}
@@ -59,7 +59,7 @@ func getTheRepos(lang, since string) ([]TrendingRepo, error) {
 	return r, nil
 }
 
-func printsRoundAndRepo(round int, repo TrendingRepo) {
+func printsRoundAndRepos(round int, repo TrendingRepo) {
 	fmt.Printf("Round:%d\tRepo:%s/%s\nlanguage:%s\n", round, repo.Username, repo.Name, repo.Language)
 }
 
@@ -76,7 +76,8 @@ func score(stars, input int) int {
 	}
 	return 0
 }
-func result(score int) {
+
+func printResult(score int) {
 	if score > 3 {
 		fmt.Println("🔥 you won the game")
 	} else {

@@ -81,7 +81,7 @@ func Test_printRoundAndRepo(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			printsRoundAndRepo(tt.i, tt.repo)
+			printsRoundAndRepos(tt.i, tt.repo)
 		})
 	}
 }
@@ -117,7 +117,7 @@ func Test_isWinner(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result(tt.score)
+			printResult(tt.score)
 		})
 	}
 }
