@@ -38,13 +38,13 @@ func Test_getTheRepos(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "nil error with lang go and since weekly",
+			name:    "returned nil error with language go and since weekly",
 			lang:    "go",
 			since:   "weekly",
 			wantErr: false,
 		},
 		{
-			name:    "returned error with wrong lang and since",
+			name:    "returned error with wrong language and since",
 			lang:    "golang",
 			since:   "yearly",
 			wantErr: true,
@@ -145,6 +145,41 @@ func Test_scoreIncrement(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := score(tt.star, tt.input); got != tt.want {
 				t.Errorf("scoreIncrement() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_getHttpResponse(t *testing.T) {
+	type args struct {
+		url string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "retruning nil error with right url",
+			args: args{
+				url: "http://google.com",
+			},
+			wantErr: false,
+		},
+		{
+			name: "returning error with wrong url",
+			args: args{
+				url: "google.com",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := getHttpResponse(tt.args.url)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getHttpResponse() error = %v, wantErr %v", err, tt.wantErr)
+				return
 			}
 		})
 	}

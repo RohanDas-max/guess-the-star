@@ -46,19 +46,24 @@ func StartTheGame(flags map[string]string) error {
 
 func getTheRepos(lang, since string) ([]TrendingRepo, error) {
 	var url string = "https://gh-trending-api.herokuapp.com/repositories/" + lang + "?since=" + since
-	resp, err := http.Get(url)
-	if err != nil {
-		return []TrendingRepo{}, err
-	}
+	httpResponse, _ := getHttpResponse(url)
+	defer httpResponse.Body.Close()
 	var r []TrendingRepo
-	if resp.StatusCode == http.StatusOK {
-		json.NewDecoder(resp.Body).Decode(&r)
+	if httpResponse.StatusCode == http.StatusOK {
+		json.NewDecoder(httpResponse.Body).Decode(&r)
 	} else {
-		return []TrendingRepo{}, errors.New(strconv.FormatInt(http.StatusNotFound, 10))
+		return nil, errors.New(strconv.FormatInt(http.StatusNotFound, 10))
 	}
 	return r, nil
 }
+func getHttpResponse(url string) (*http.Response, error) {
+	httpResponse, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
 
+	return httpResponse, nil
+}
 func printsRoundAndRepos(round int, repo TrendingRepo) {
 	fmt.Printf("Round:%d\tRepo:%s/%s\nlanguage:%s\n", round, repo.Username, repo.Name, repo.Language)
 }
