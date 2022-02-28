@@ -3,18 +3,23 @@ package main
 import (
 	"context"
 	"flag"
-	"time"
+	"log"
 
 	"github.com/rohandas-max/GuessTheStar/pkg/controller"
 )
 
 func main() {
 	ctx := context.Background()
-	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	lang := flag.String("l", "", "enter the programming language")
+	since := flag.String("s", "weekly", "eg: daily/weekly/monthly")
 	flag.Parse()
-	var since = "weekly"
-	var url string = "https://gh-trending-api.herokuapp.com/repositories/" + *lang + "?since=" + since
-	controller.Controller(ctx, url)
+	flags := make(map[string]string)
+	flags["lang"] = *lang
+	flags["since"] = *since
+	err := controller.Controller(ctx, flags)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

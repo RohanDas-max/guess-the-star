@@ -2,7 +2,7 @@ package utils
 
 import "testing"
 
-func TestCheckTolerance(t *testing.T) {
+func TestIsCorrectGuess(t *testing.T) {
 	tests := []struct {
 		name  string
 		star  int
@@ -10,46 +10,40 @@ func TestCheckTolerance(t *testing.T) {
 		want  bool
 	}{
 		{
-			name:  "pass",
+			name:  "checking tolerance with exact input",
 			star:  100,
 			input: 100,
 			want:  true,
 		},
 		{
-			name:  "pass2",
+			name:  "checking tolerance with 10% lower input",
 			star:  100,
 			input: 90,
 			want:  true,
 		},
 		{
-			name:  "pass4",
+			name:  "checking tolerance with 10% higher input",
 			star:  100,
 			input: 110,
 			want:  true,
 		},
 		{
-			name:  "fail",
+			name:  "failed with more then tolerance",
 			star:  100,
 			input: 111,
 			want:  false,
 		},
 		{
-			name:  "fail2",
+			name:  "checking tolerance with less then tolerance",
 			star:  100,
 			input: 89,
-			want:  false,
-		},
-		{
-			name:  "fail3",
-			star:  100,
-			input: 79,
 			want:  false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := CheckTolerance(tt.star, tt.input)
+			got := IsCorrectGuess(tt.star, tt.input)
 			if got != tt.want {
 				t.Errorf("got=%v, instead of %v", got, tt.want)
 			}
